@@ -1,0 +1,60 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %} Bienvenu! {% endblock %}
+{% block stylesheets %}
+    {{parent()}} 
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+{% endblock %}
+ 
+{% block body %}
+{{parent()}} 
+{# navbar #}
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <div></div>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="logout nav-link" href="{{path('app_logout')}}">Se déconnecter</a>
+        </li>
+        </ul>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            {# sidebar #}
+        {% set route_name = app.request.attributes.get('_route') %}
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <img src="{{asset('/img/logo.svg')}}" class="sidebarImg mt-2" />
+
+            <div class="sidebar-sticky pt-3">
+
+            <ul class="nav flex-column"> 
+                <li class="nav-item"  >                
+                    <a {% if route_name == "app_orders_to_csv" %} class="active nav-link" {% else %} class="nav-link"{% endif %}  href="{{path('app_orders_to_csv')}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                        Commandes
+                    </a>
+                </li>               
+                
+                <li class="nav-item">                  
+                    <a {% if route_name == "contacts" %}class="active nav-link" {% else %} class="nav-link"{% endif %} href="{{path('contacts')}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Clients
+                    </a>
+                </li>
+            </ul> 
+            </div>
+        </nav>
+    
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            {% block contenu %}
+
+            {% endblock %}
+        </main>
+        </div>
+    </div>
+{% endblock %}

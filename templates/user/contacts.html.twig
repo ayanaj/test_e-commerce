@@ -1,0 +1,58 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} Liste des contact {% endblock %}
+
+{% block stylesheets %}
+    {{parent()}} 
+    <link rel="stylesheet" href="{{ asset('/css/liste.css')}}"> 
+
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+    
+{% endblock %}
+{% block contenu %}
+{{parent()}}  
+<div class="container-fluid py-4"> 
+  <div class="row">
+    {# exportTocsv a javascript function that provide the csv export #}
+    {# {{ dump(commands) }}  #}  
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header pb-0">
+            <h6  class="text-uppercase text-secondary text-xxs  opacity-7" >Liste des contacts</h6>
+          </div>
+          <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center justify-content-center mb-0">
+                <thead>
+                  <tr>
+                    <th>Nom du compte</th>
+                    <th>Nom du contact</th>
+                    <th>Pays</th>  
+                    <th>Ligne d'adresse 1</th>
+                    <th>Ligne d'adresse 2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {# fetching the data response thats rendred from the usercontroller #}
+                  {% if contacts %}
+                    {% for contact in contacts %}
+                      <tr> 
+                        <td>{% if contact.AccountName is defined and contact.AccountName != null %}{{contact.AccountName}}{% else %}-{% endif %}</td>
+                        <td>{% if contact.ContactName is defined and contact.ContactName != null %}{{contact.ContactName}}{% else %}-{% endif %}</td>
+                        <td>{% if contact.Country is defined and contact.Country != null %}{{contact.Country}}{% else %}-{% endif %}</td>
+                        <td>{% if contact.AddressLine1 is defined and contact.AddressLine1 != null %}{{contact.AddressLine1}}{% else %}-{% endif %}</td> 
+                        <td>{% if contact.AddressLine2 is defined and contact.AddressLine2 != null %}{{contact.AddressLine2}}{% else %}-{% endif %}</td> 
+                      </tr>
+                    {% endfor %}
+                  {% endif %} 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>      
+{% endblock %}

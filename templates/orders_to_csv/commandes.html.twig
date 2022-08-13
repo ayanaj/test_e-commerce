@@ -1,0 +1,108 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} Liste des commandes {% endblock %}
+
+{% block stylesheets %}
+    {{parent()}} 
+    <link rel="stylesheet" href="{{ asset('/css/liste.css')}}"> 
+
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+
+    <script>  
+      //  export data into a csv file
+      function exportTocsv(){
+        var CSValues = [];
+        document.getElementById("preloader").style.display = "block";
+        // call the controller function that sends the json response data of an order
+        fetch('{{path("export")}}')
+        .then(function (response) { 
+          document.getElementById("preloader").style.display = "none";
+
+          var data= response.json(); 
+          data.then(function(result) {
+            // divide the data into three arrays to display it easily on my csv file
+            // csv the array that contains the titles , CSValues the order and its owner data , item val for the Sales orderLines
+            for (i = 0; i < result.length; i++) {
+              var val = result[i]; 
+              var items=val.SalesOrderLines['results'];
+              CSValues.push([val.OrderNumber, val.DeliverTo.ContactName, val.DeliverTo.AddressLine1, val.DeliverTo.Country, val.DeliverTo.ZipCode,val.DeliverTo.City,items.length])
+              var itemVal = [];
+              
+              for (j =0; j< items.length; j++ ){ 
+                itemVal.push(['','','','','','','',j+1, items[j].Item, items[j].Quantity, items[j].VATAmount, items[j].UnitPrice])
+              }  
+
+              CSValues = CSValues.concat(itemVal); 
+
+            }    
+
+            var csv = 'order;delivery_name;delivery_address;delivery_country;delivery_zipcode;delivery_city;items_count;item_index;item_id;item_quantity;line_price_excl_vat;line_price_excl_vat\n';  
+            CSValues.forEach(function(row) {  
+                    csv += row.join(';');  
+                    csv += "\n";  
+            });     
+            
+            var hiddenElement = document.createElement('a');  
+            hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);  
+            hiddenElement.target = '_blank';  
+              
+            //provide the name for the CSV file to be downloaded  
+            hiddenElement.download = 'Liste des commandes.csv';  
+            hiddenElement.click();   
+           
+        });
+      }) 
+        
+      }
+    </script>
+    
+{% endblock %}
+ 
+{% block contenu %}
+{{parent()}}             
+  <div class="container-fluid py-4"> 
+    <div class="row">
+      {# exportTocsv a javascript function that provide the csv export #}
+      {# {{ dump(commands) }}  #} 
+        <div class="col-12 mb-4">
+          <div class="exportButton">
+            <button type="button" class="btn btn-sm mybutton btn-outline" onclick="exportTocsv()" >exporter en csv</button>
+          </div> 
+        </div> 
+        <div class="col-12">
+          <div class="card mb-4">
+            <div class="card-header pb-0">
+              <h6  class="text-uppercase text-secondary text-xxs  opacity-7" >Liste des commandes</h6>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center justify-content-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-xxs  opacity-7">Numéro de commande</th>
+                      <th class="text-xxs  opacity-7" >Montant</th>
+                      <th class="text-xxs  opacity-7">Devise</th>
+                      <th class="text-xxs  opacity-7">Client</th> 
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {# fetching the data response thats rendred from the ordersToCsvcontroller #}
+                    {% for command in commands %}
+                      <tr>  
+                        <td>{% if command.OrderNumber is defined and command.OrderNumber != null %}{{command.OrderNumber}}{% else %}-{% endif %}</td> 
+                        <td>{% if command.Amount is defined and command.Amount != null %}{{command.Amount}}{% else %}-{% endif %}</td>
+                        <td>{% if command.Currency is defined and command.Currency != null %}{{command.Currency}}{% else %}-{% endif %}</td>
+                        <td>{% if command.DeliverTo is defined and command.DeliverTo != null %}{{command.DeliverTo.AccountName}}{% else %}-{% endif %}</td>
+                      </tr>
+                    {% endfor %}  
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div> 
+{% endblock %}

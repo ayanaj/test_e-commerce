@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Login {% endblock %}
+{% block stylesheets %}
+    {{parent()}}
+    <link rel="stylesheet" href="{{ asset('/css/login.css')}}"> 
+
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+{% endblock %}
+{% block body %}
+{{parent()}} 
+    <div class="row no-margin contenuLogin">
+        <form method="post" class="FormLogin">
+            <div>
+                <div class="row no-margin headerLogin">
+                    <h1 class="TitleHeaderCnx titleCnx1">
+                        Bienvenue !</h1>
+                </div> 
+                {% if error %}
+                    <div class="alert LabelMdp alert-danger mt-3" role="alert">
+                        Veuillez vérifier vos données !
+                    </div>
+                {% endif %} 
+                <div class="row no-margin DivImgLogin">
+                    <img src="{{asset('/img/login.png')}}" class="imgLogin">
+                </div>
+                <div class="row no-margin IdLogin">
+                    <label class="LabelLogin LabelId" for="nom">Adresse e-mail :</label>
+                    <input type="text" value="{{ last_username }}" onChange="validate()" id="username" name="_username" class="form-control inputInscri inputMd" placeholder="Votre adresse mail" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                </div>
+                <div class="row no-margin MdpLogin">
+                    <label class="LabelLogin LabelMdp" for="mdp">Mot de passe :</label>
+                    <input type="password" id="password" name="_password" class="form-control inputInscri inputMd" placeholder="Votre mot de passe" aria-label="Recipient's password">
+                </div>
+                
+                <div class="row no-margin BottomCnx">
+                    <button  type="submit" class="btnCnx mybutton">Se connecter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
