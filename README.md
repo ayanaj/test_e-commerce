@@ -57,3 +57,4 @@ password ecommercepwd
 
 or there is a function in the LoginController named createUserTest that allows you to create a user in the database.
 
+the Hostapi variable that i used in the  service "ListService" is defined in the yaml files "twig.yml under global" and "service.yml under parameters" it contains the host .
