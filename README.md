@@ -51,10 +51,7 @@ html5 + css3 + bootstrap 4 et javascript for the frontEnd
 ![orders list](https://github.com/ayanaj/test_e-commerce/blob/13-08-2022/screenshot/listOrders.JPG)==>  the route : /orders-to-csv
 ![contact's order list](https://github.com/ayanaj/test_e-commerce/blob/13-08-2022/screenshot/Capture.JPG) ==> the route : /contacts
 
-the user i connect with :
-username user@ecommerce.com
-password ecommercepwd
 
 or there is a function in the LoginController named createUserTest that allows you to create a user in the database.
 
-the Hostapi variable that i used in the  service "ListService" is defined in the yaml files "twig.yml under global" and "service.yml under parameters" it contains the host .
+the Hostapi variable that i used in the  service "ListService" is defined in the yaml files "twig.yml under global" and "service.yml under parameters" it contains the API host .
